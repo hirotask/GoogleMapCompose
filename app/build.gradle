@@ -19,6 +19,13 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        def properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        // local.propertiesのapi_keyに定義されている値を読み込む
+        def WEATHER_API_KEY = properties.getProperty("WEATHER_API_KEY")
+        // ついでにbuildConfigFieldに定義
+        buildConfigField("String", "WEATHER_API_KEY", "\"${WEATHER_API_KEY}\"")
     }
 
     buildTypes {

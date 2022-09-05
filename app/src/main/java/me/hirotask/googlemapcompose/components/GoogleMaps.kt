@@ -1,5 +1,6 @@
 package me.hirotask.googlemapcompose.components
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -16,17 +17,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.ktx.awaitMap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.hirotask.googlemapcompose.R
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.URL
 
+@SuppressLint("PotentialBehaviorOverride")
 @Composable
 @Preview
 fun GoogleMaps() {
+
     val mapView = rememberMapViewWithLifeCycle()
     Box {
         Column(
@@ -37,17 +46,25 @@ fun GoogleMaps() {
             AndroidView({ mapView }) { mapView ->
                 CoroutineScope(Dispatchers.Main).launch {
                     val map = mapView.awaitMap()
+                    map.setInfoWindowAdapter(CustomInfoWindow(mapView.context))
                     map.uiSettings.isZoomControlsEnabled = true
 
                     map.setOnMapLongClickListener {
-                        map.addMarker(MarkerOptions().title("mark").position(it))
-                    }
+                        CoroutineScope(Dispatchers.Main).launch {
 
+                            val marker = MarkerOptions().position(it)
+
+                            map.addMarker(marker)
+
+                        }
+
+                    }
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun rememberMapLifeCycleObserver(
