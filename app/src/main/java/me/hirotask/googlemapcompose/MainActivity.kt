@@ -20,11 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.ktx.awaitMap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
